@@ -1,79 +1,125 @@
-# Имя проекта
-----------------
+---
 
-**Описание**:  Поместите осмысленное, краткое и простое описание того, чего этот проект пытается достичь и почему это важно.
-Опишите проблемы, которые решает этот проект.
-Опишите, как это программное обеспечение может улучшить жизнь своей аудитории.
+## JavaFX Example: Drawing Shapes on a Canvas
 
-  - **Технологический стек**: Indicate the technological nature of the software, including primary programming language(s) and whether the software is intended as standalone or as a module in a framework or other ecosystem.
-  - **Статус**:  Alpha, Beta, 1.1, etc. It's OK to write a sentence, too. The goal is to let interested people know where this project is at. This is also a good place to link to the [CHANGELOG](CHANGELOG.md).
-  - **Ссылка на продукт или демо-экземпляр**
-  - Describe what sets this apart from related-projects. Linking to another doc or page is OK if this can't be expressed in a sentence or two.
+This example demonstrates how to use the JavaFX library to draw various shapes on a canvas in an application. The controller class handles the drawing of different shapes such as rectangles, lines, triangles, and ovals when corresponding buttons are clicked. Each shape is drawn using specific methods provided by the GraphicsContext class.
 
+#### Class Overview
 
-**Скриншот рабочего окна приложения**: If the software has visual components, place a screenshot after the description; e.g.,
+The main class for this example is `HelloController`, which contains methods for each type of shape to be drawn. These methods include:
 
-![](https://raw.githubusercontent.com/cfpb/open-source-project-template/main/screenshot.png)
+- `onClickRectangle`: Draws a rounded rectangle.
+- `onClickLine`: Draws a line and an arc.
+- `onClickTriangle`: Draws a triangle.
+- `onClickOval`: Draws an oval.
 
-## Архитектура
-Поместите диаграмму компонентов/классов модели
-Укажите назначение пакетов scr, если это яно не слудете из названия
-![DAO1](https://user-images.githubusercontent.com/65451923/226867283-265ea649-35ed-474a-8164-62c315e95fb9.png)
+Each method clears the canvas before drawing the new shape with specified colors and thicknesses.
 
+### Example Code
 
-## Зависимости
+```java
+package org.example.task2_figura;
 
-Опишите все зависимости, которые должны быть установлены для работы этого программного обеспечения.
-Сюда входят языки программирования, базы данных или другие механизмы хранения, инструменты сборки, фреймворки и так далее.
-Если требуются определенные версии другого программного обеспечения или известно, что они не работают, сообщите об этом.
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 
+public class HelloController {
 
-## Установка
+    @FXML
+    private Canvas canvas;
+    GraphicsContext gc;
 
-Подробные инструкции по установке, настройке и запуску проекта (необходимо для проверки работоспособности кода).
-В качестве альтернативы можно указать ссылку на отдельный документ [INSTALL](INSTALL.md).
+    @FXML
+    public void onClickRectangle(ActionEvent actionEvent) {
+        gc = canvas.getGraphicsContext2D();
+        // Очистим холст
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-## Конфигурация
+        // установка толщины линии
+        gc.setLineWidth(6.0);
+        // установка цвета
+        gc.setFill(Color.RED);
+        // рисование скругленного прямоугольника
+        gc.strokeRoundRect(10, 10, 50, 50, 10, 10);
+        // закрашивание скругленного прямоугольника
+        gc.fillRoundRect(100, 10, 50, 50, 10, 10);
+        // установка цвета заполнения
+        gc.setFill(Color.BLUE);
+    }
 
-Если программное обеспечение требует настройки, подробно опишите его здесь или в другой документации, по ссылке.
+    @FXML
+    public void onClickLine(ActionEvent actionEvent) {
+        gc = canvas.getGraphicsContext2D();
+        // Очистим холст
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-## Применение
+        // рисование линии
+        gc.strokeLine(200, 50, 300, 50);
+        // рисование дуги
+        gc.strokeArc(320, 10, 50, 50, 40, 80, ArcType.ROUND);
+        // закрашивание дуги
+        gc.fillArc(320, 70, 50, 50, 00, 120, ArcType.OPEN);
+    }
 
-Как использовать ПО
+    @FXML
+    public void onClickTriangle(ActionEvent actionEvent) {
+        gc = canvas.getGraphicsContext2D();
+        // Очистим холст
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-## Проверка ПО
+        // Определим координаты вершин треугольника
+        double x1 = 100;
+        double y1 = 100;
+        double x2 = 200;
+        double y2 = 100;
+        double x3 = 150;
+        double y3 = 200;
 
-Если программное обеспечение включает автоматизированные тесты, подробно опишите, как запускать эти тесты.
+        // Начнем путь
+        gc.beginPath();
 
-## Проблемы
+        // Переместимся в первую точку
+        gc.moveTo(x1, y1);
 
-Задокументируйте любые известные существенные недостатки программного обеспечения.
+        // Нарисуем линию до второй точки
+        gc.lineTo(x2, y2);
 
-## Получение справочной информации
+        // Нарисуем линию до третьей точки
+        gc.lineTo(x3, y3);
 
-Опишите, как получить помощь с этим программным обеспечением (это могут быть ссылки на систему отслеживания проблем, вики, список рассылки и т. д.)
+        // Закроем путь, соединив последнюю точку с первой
+        gc.closePath();
 
-**Другое**
+        // Установим цвет заливки
+        gc.setFill(javafx.scene.paint.Color.BLUE);
 
-Если у вас есть вопросы, проблемы, отчеты об ошибках и т. д., сообщите о проблеме в системе отслеживания проблем этого репозитория.
+        // Заливка треугольника
+        gc.fill();
 
-## Приглашение к сотрудничеству
+        // Установим цвет обводки
+        gc.setStroke(javafx.scene.paint.Color.BLACK);
 
-В этом разделе должно быть представлены предложения по дальнейшему развитию проекта, или описаны ключевые задачи, на которых в настоящее время реализуются или проектируются; например, обращение о отправке отзывах о функциях, предложения по исправлению определенных ошибок, участие в создании важных частей и т. д.
+        // Толщина линии
+        gc.setLineWidth(2);
 
+        // Обведем контур треугольника
+        gc.stroke();
+    }
 
-----
+    @FXML
+    public void onClickOval(ActionEvent actionEvent) {
+        gc = canvas.getGraphicsContext2D();
+        // Очистим холст
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-## Open source licensing info
-1. [TERMS](TERMS.md)
-2. [LICENSE](LICENSE)
-3. [CFPB Source Code Policy](https://github.com/cfpb/source-code-policy/)
-
-
-----
-
-## Источники и справочники
-перечислите
-1. Проекты, которые вас вдохновили
-2. Связанные проекты
-3. Книги, статьи, доклады или другие источники, которые повлияли на создание проекта.
+        // рисование овала
+        gc.strokeOval(10, 70, 50, 30);
+        // закрашивание овала
+        gc.fillOval(100, 70, 50, 30);
+        // рисование линии
+    }
+}
